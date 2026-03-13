@@ -71,7 +71,7 @@ function Autenticacao() {
                     <div>
                         <h1>Painel administrativo</h1>
                         <p>Você está logado lindamente</p>
-                        <button>Sair</button>
+                        <button onClick={() => setAutenticado(false)}>Sair</button>
                     </div>
                 :
                     <p>Você ainda não está logado</p>

@@ -1,10 +1,12 @@
 'use client'
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Autenticacao from "../autenticacao/page";
 
 
 function Carros() {
 
+    const [autenticado, setAutenticado] = useState(false)
     const [exibeListagem, setExibeListagem] = useState(true)
 
     const [nome, setNome] = useState("")
@@ -88,15 +90,30 @@ function Carros() {
         setListaCarros(listaCarros.concat(objeto))
     }
 
+    useEffect(() => {
+
+        const logado = localStorage.getItem("logado")
+        if (logado == "true") {
+            setAutenticado(true)
+        }
+    }, [])
+
     return (
         <div>
+
             <h1>Lista de Carros</h1>
             <hr />
 
-            <button onClick={ ()=> setExibeListagem(true)} className="btn btn-primary">Listagem</button>
-            <button onClick={ ()=> setExibeListagem(false)}className="btn btn-success mx-4">Cadastro</button>
+            <button onClick={() => setExibeListagem(true)} className="btn btn-primary">Listagem</button>
             
             {
+                autenticado == true ?
+                     <button onClick={() => setExibeListagem(false)} className="btn btn-success mx-4">Cadastro</button>
+                :
+                <p></p>
+            }
+            
+                {
                 exibeListagem == true ?
                     <table className="table">
                         <thead>
@@ -120,27 +137,24 @@ function Carros() {
                             }
                         </tbody>
                     </table>
-                :
-                    <form onSubmit={salvar}>
+                    :
+                        <form onSubmit={salvar}>
 
-                        <p>Digite o nome do carro:</p>
-                        <input onChange={e => setNome(e.target.value)} />
+                            <p>Digite o nome do carro:</p>
+                            <input onChange={e => setNome(e.target.value)} />
 
-                        <p>Digite a marca:</p>
-                        <input onChange={e => setMarca(e.target.value)} />
+                            <p>Digite a marca:</p>
+                            <input onChange={e => setMarca(e.target.value)} />
 
-                        <p>Digite o valor:</p>
-                        <input onChange={e => setValor(e.target.value)} />
-                        <br />
-                        <button>Salvar</button>
+                            <p>Digite o valor:</p>
+                            <input onChange={e => setValor(e.target.value)} />
+                            <br />
+                            <button>Salvar</button>
 
-                    </form>
-            }
-
-
-
-
-
+                        </form>
+                    } 
+            
+        
         </div >
     );
 }
